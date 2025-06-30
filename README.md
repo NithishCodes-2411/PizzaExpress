@@ -31,6 +31,11 @@
 ## Getting Started
 
 1. **Clone or Download the Repository**
+   
+     ```
+     git clone https://github.com/NithishCodes-2411/PizzaExpress.git
+     ```
+
 
 2. **Serve the Project**
    - Use a local web server to serve the `pages` directory.  
