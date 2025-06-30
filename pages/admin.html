@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Portal | Pizza Order</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      padding-top: 60px;
+    }
+    .form-section {
+      margin-top: 40px;
+    }
+    #adminArea {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<nav class="navbar navbar-dark bg-dark fixed-top">
+  <div class="container d-flex justify-content-between">
+    <a class="navbar-brand d-flex align-items-center" href="index.html">
+      <img src="../assets/images/logo.png" alt="Logo" width="30" height="30" class="me-2">
+      PizzaExpress Admin
+    </a>
+    <a href="menu.html" class="btn btn-outline-light">Back to Menu</a>
+  </div>
+</nav>
+
+<!-- Access Prompt -->
+<div class="container mt-5" id="authPrompt">
+  <h3 class="text-center mb-4">Admin Access</h3>
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <input type="password" id="adminKey" class="form-control mb-3" placeholder="Enter Admin Secret Key">
+      <button class="btn btn-dark w-100" onclick="validateAdmin()">Enter</button>
+    </div>
+  </div>
+</div>
+
+<!-- Admin Area -->
+<div class="container" id="adminArea">
+  <h2 class="mb-4">Manage Pizza Menu</h2>
+
+  <!-- Table of Items -->
+  <table class="table table-bordered" id="menuTable">
+    <thead class="table-dark">
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Price ($)</th>
+        <th>Image Path</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <!-- Add Item Form -->
+  <div class="form-section">
+    <h4>Add / Update Item</h4>
+    <form id="itemForm">
+      <input type="hidden" id="editIndex" value="-1">
+      <div class="row mb-3">
+        <div class="col-md-3"><input type="text" id="name" class="form-control" placeholder="Pizza Name" required></div>
+        <div class="col-md-3"><input type="text" id="description" class="form-control" placeholder="Description" required></div>
+        <div class="col-md-2"><input type="number" id="price" class="form-control" placeholder="Price" step="0.01" required></div>
+        <div class="col-md-3"><input type="text" id="image" class="form-control" placeholder="../assets/images/pizza.jpg" required></div>
+        <div class="col-md-1 d-grid"><button type="submit" class="btn btn-primary">Save</button></div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  const SECRET_ADMIN_KEY = "superadmin123"; // You can change this
+
+  const menuTableBody = document.querySelector("#menuTable tbody");
+  let menu = [];
+
+  async function loadMenu() {
+    const stored = localStorage.getItem("menu");
+    if (stored) {
+      menu = JSON.parse(stored);
+    } else {
+      const res = await fetch("../data/menu.json");
+      menu = await res.json();
+      localStorage.setItem("menu", JSON.stringify(menu));
+    }
+    renderTable();
+  }
+
+  function renderTable() {
+    menuTableBody.innerHTML = "";
+    menu.forEach((item, index) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${item.name}</td>
+        <td>${item.description}</td>
+        <td>${item.price}</td>
+        <td>${item.image}</td>
+        <td>
+          <button class="btn btn-sm btn-warning me-2" onclick="editItem(${index})">Edit</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteItem(${index})">Delete</button>
+        </td>
+      `;
+      menuTableBody.appendChild(row);
+    });
+  }
+
+  function editItem(index) {
+    const item = menu[index];
+    document.getElementById("editIndex").value = index;
+    document.getElementById("name").value = item.name;
+    document.getElementById("description").value = item.description;
+    document.getElementById("price").value = item.price;
+    document.getElementById("image").value = item.image;
+  }
+
+  function deleteItem(index) {
+    if (confirm("Are you sure you want to delete this item?")) {
+      menu.splice(index, 1);
+      localStorage.setItem("menu", JSON.stringify(menu));
+      renderTable();
+    }
+  }
+
+  document.getElementById("itemForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const index = parseInt(document.getElementById("editIndex").value);
+    const newItem = {
+      name: document.getElementById("name").value.trim(),
+      description: document.getElementById("description").value.trim(),
+      price: parseFloat(document.getElementById("price").value),
+      image: document.getElementById("image").value.trim()
+    };
+
+    if (index === -1) {
+      newItem.id = Date.now();
+      menu.push(newItem);
+    } else {
+      menu[index] = { ...menu[index], ...newItem };
+    }
+
+    localStorage.setItem("menu", JSON.stringify(menu));
+    document.getElementById("itemForm").reset();
+    document.getElementById("editIndex").value = -1;
+    renderTable();
+  });
+
+  function validateAdmin() {
+    const enteredKey = document.getElementById("adminKey").value;
+    if (enteredKey === SECRET_ADMIN_KEY) {
+      document.getElementById("authPrompt").style.display = "none";
+      document.getElementById("adminArea").style.display = "block";
+      loadMenu();
+    } else {
+      alert("Invalid admin key!");
+    }
+  }
+</script>
+
+</body>
+</html>

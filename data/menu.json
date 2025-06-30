@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "name": "Margherita",
+    "description": "Classic delight with mozzarella and basil.",
+    "price": 8.99,
+    "image": "../assets/images/margherita.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Pepperoni",
+    "description": "Loaded with pepperoni and extra cheese.",
+    "price": 10.49,
+    "image": "../assets/images/pepperoni.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Veggie Blast",
+    "description": "Tomato, onion, capsicum, olives, and corn.",
+    "price": 9.99,
+    "image": "../assets/images/veggie.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Hawaiian",
+    "description": "Tangy pineapple and ham on a cheese base.",
+    "price": 10.99,
+    "image": "../assets/images/hawaiian.jpg"
+  },
+  {
+    "id": 5,
+    "name": "BBQ Chicken",
+    "description": "Smoky BBQ chicken with onion and mozzarella.",
+    "price": 11.49,
+    "image": "../assets/images/bbq-chicken.jpg"
+  },
+  {
+    "id": 6,
+    "name": "Supreme",
+    "description": "All-in-one: meats, veggies, and loads of cheese.",
+    "price": 12.49,
+    "image": "../assets/images/supreme.jpg"
+  },
+  {
+    "id": 7,
+    "name": "Four Cheese",
+    "description": "Mozzarella, parmesan, cheddar, and gouda.",
+    "price": 11.99,
+    "image": "../assets/images/four-cheese.jpg"
+  },
+  {
+    "id": 8,
+    "name": "Meat Lovers",
+    "description": "Pepperoni, sausage, ham, bacon, and beef.",
+    "price": 12.99,
+    "image": "../assets/images/meat-lovers.jpg"
+  },
+  {
+    "id": 9,
+    "name": "Vegan Delight",
+    "description": "Plant-based toppings and vegan cheese.",
+    "price": 10.99,
+    "image": "../assets/images/vegan.jpg"
+  },
+  {
+    "id": 10,
+    "name": "Mushroom Alfredo",
+    "description": "Creamy Alfredo sauce with sautéed mushrooms.",
+    "price": 11.49,
+    "image": "../assets/images/mushroom-alfredo.jpg"
+  }
+]
